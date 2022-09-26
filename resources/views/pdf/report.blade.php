@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="robots" content="noindex">
 
-    <title>ICTC - Report</title>
+    <title>COSTECH - Report</title>
     <style>
         .text-right {
             text-align: right;
@@ -21,7 +21,7 @@
                 <!-- <img src="assets/img/logo.png" alt=""> -->
                 <td style="width: 15%;"></td>
                 <td style="margin: auto;width: 70%;padding: 10px;text-align: center;">
-                    <h3>ICTC</h3><h4>MONTHLY REPORT</h4>
+                    <h3>COSTECH</h3><h4>MONTHLY REPORT</h4>
                 </td>
                 <td style="width: 15%;"></td>
                 <!-- <img src="{{ asset('assets/img/logo.png') }}" alt=""> -->
@@ -71,7 +71,7 @@
                         <td style="padding: 10px;border: 1px solid grey">{{ $no }}</td>
                         <td style="padding: 10px;border: 1px solid grey">{{ $todo->title }}</td>
                         <td style="padding: 10px;border: 1px solid grey">{{ $todo->deadline }}</td>
-                        <td style="padding: 10px;border: 1px solid grey">{{ $todo->progress }}</td>
+                        <td style="padding: 10px;border: 1px solid grey">{{ $todo->progress }}%</td>
                         <td style="padding: 10px;border: 1px solid grey">{{ $status }}</td>
                         <td style="padding: 10px;border: 1px solid grey">{{ $todo->output }}</td>
                     </tr>

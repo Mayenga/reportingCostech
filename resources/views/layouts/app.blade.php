@@ -34,36 +34,69 @@
   <link href="{{ asset('vendor/simple-datatables/style.css') }}" rel="stylesheet">
 
   <!-- datatables -->
-  <link href="https://cdn.datatables.net/1.12.0/css/jquery.dataTables.min.css" rel="stylesheet">
-  <link href="https://cdn.datatables.net/buttons/2.2.3/css/buttons.dataTables.min.css" rel="stylesheet">
+  <!-- <link href="https://cdn.datatables.net/1.12.0/css/jquery.dataTables.min.css" rel="stylesheet">
+  <link href="https://cdn.datatables.net/buttons/2.2.3/css/buttons.dataTables.min.css" rel="stylesheet"> -->
 
-  <!-- datatables with dropdown -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-  <link href="https://cdn.datatables.net/v/dt/dt-1.10.16/r-2.2.1/datatables.min.css" rel="stylesheet"/>
-  <script src="https://cdn.datatables.net/v/dt/dt-1.10.16/r-2.2.1/datatables.min.js"></script>
+  <!-- datatable with child rows -->
+  <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+  <link href="https://nightly.datatables.net/css/jquery.dataTables.css" rel="stylesheet" type="text/css" />
+  <script src="https://nightly.datatables.net/js/jquery.dataTables.js"></script>
+  <!-- datatable with child rows -->
 
   <!-- Template Main CSS File -->
   <link href="{{ asset('tmp/css/style.css') }}" rel="stylesheet">
 
   <script>
-    $(document).ready(function (){
-      var table = $('#example').DataTable({
-          'responsive': true
-      });
-
-      // Handle click on "Expand All" button
-      $('#btn-show-all-children').on('click', function(){
-          // Expand row details
-          table.rows(':not(.parent)').nodes().to$().find('td:first-child').trigger('click');
-      });
-
-      // Handle click on "Collapse All" button
-      $('#btn-hide-all-children').on('click', function(){
-          // Collapse row details
-          table.rows('.parent').nodes().to$().find('td:first-child').trigger('click');
-      });
+    $(document).ready( function () {
+  
+  function format ( d ) {
+  
+    return '<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">'+
+          '<tr>'+
+              '<th>PROCESSES</th>'+
+          '</tr>'+
+          '<tr>'+
+              '<td>'+d[7]+'</td>'+
+          '</tr>'+
+      '</table>';
+  }
+    
+    var table = $('#example').DataTable({
+      columnDefs: [
+        {
+          targets: 0,
+          className:      'details-control',
+          orderable:      false,
+          data:           null,
+          defaultContent: ''
+        },
+        {
+          targets: [7],
+          visible: false
+        }
+      ]
     });
+    
+      // Add event listener for opening and closing details
+      $('#example tbody').on('click', 'td.details-control', function () {
+          var tr = $(this).closest('tr');
+          var row = table.row( tr );
+   
+          if ( row.child.isShown() ) {
+              // This row is already open - close it
+              row.child.hide();
+              tr.removeClass('shown');
+          }
+          else {
+              // Open this row
+              row.child( format(row.data()) ).show();
+              tr.addClass('shown');
+          }
+      } );
+    
+  } );
 
+  
     $(document).ready(function(){
       $(".reason").hide();
       $(".allall").hide();
@@ -94,43 +127,17 @@
         $(".pweek").hide();
       });
     });
-
-    $(document).ready(function() {
-      var printCounter = 0;
-  
-      // Append a caption to the table before the DataTables initialisation
-      $('#example').append('<caption style="caption-side: bottom">A fictional company\'s staff table.</caption>');
-  
-      $('#example').DataTable( {
-          dom: 'Bfrtip',
-          buttons: [
-              'copy',
-              {
-                  extend: 'excel',
-                  messageTop: 'The information in this table is copyright to Sirius Cybernetics Corp.'
-              },
-              {
-                  extend: 'pdf',
-                  messageBottom: null
-              },
-              {
-                  extend: 'print',
-                  messageTop: function () {
-                      printCounter++;
-  
-                      if ( printCounter === 1 ) {
-                          return 'This is the first time you have printed this document.';
-                      }
-                      else {
-                          return 'You have printed this document '+printCounter+' times';
-                      }
-                  },
-                  messageBottom: null
-              }
-          ]
-      } );
-  });
   </script>
+
+  <style>
+    td.details-control {
+      background: url('https://www.datatables.net/examples/resources/details_open.png') no-repeat center center;
+      cursor: pointer;
+    }
+    tr.shown td.details-control {
+      background: url('https://www.datatables.net/examples/resources/details_close.png') no-repeat center center;
+    }
+  </style>
 </head>
 <body class="hold-transition sidebar-mini">
     <div class="wrapper">

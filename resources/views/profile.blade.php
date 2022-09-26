@@ -20,22 +20,23 @@
 
               <img src="{{ asset('assets/img/profile.png') }}" alt="Profile" class="rounded-circle">
               <h2>{{Auth::user()->name}}</h2>
+
               <?php 
                 $role = '';
                 $id = Auth::user()->id;
-                $dpts = DB::select("SELECT departments.name AS dptss,roles.name AS rolee FROM departments,users,role_user,roles WHERE departments.id = users.dpt_id AND users.id = role_user.user_id AND role_user.role_id = roles.id AND users.id = $id");
+                $dpts = DB::select("SELECT roles.name AS rolee FROM role_user,roles,users WHERE users.id = role_user.user_id AND role_user.role_id = roles.id AND users.id = $id");
 
                 foreach($dpts as $dpt){
                     if($dpt->rolee == 'dg'){
                         $role = 'Director General';
-                    }elseif($dpt->rolee == 'Director'){
-                        ($dpt->rolee == 'Director');
-                    }elseif($dpt->rolee == 'User'){
-                        ($dpt->rolee == 'User');
+                    }elseif($dpt->rolee == 'director'){
+                        $dpt->rolee == 'Director';
+                    }elseif($dpt->rolee == 'user'){
+                        $dpt->rolee == 'User';
                     }
                     echo "<h3>$role</h3>";
                 }
-              
+                
               ?>
               
               <div class="social-links mt-2">
@@ -49,7 +50,29 @@
         <div class="col-xl-8">
 
           <div class="card">
-            <x-alert />
+
+          @if(Session::has('error'))
+                <div class="alert alert-danger">
+                  <strong>Whoops!</strong> There were some problems with your input.<br><br>
+                  {{ Session::get('error') }}
+                </div>
+              @endif
+              @if ($errors->any())
+                <div class="alert alert-danger">
+                  <strong>Whoops!</strong> There were some problems with your input.<br><br>
+                  <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                  </ul>
+                </div>
+              @endif
+              @if(Session::has('success'))
+                <div class="alert alert-success">
+                  {{ Session::get('success') }}
+                </div>
+              @endif
+
             <div class="card-body pt-3">
               <!-- Bordered Tabs -->
               <ul class="nav nav-tabs nav-tabs-bordered">

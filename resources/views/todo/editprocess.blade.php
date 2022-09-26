@@ -33,40 +33,28 @@
               </div>
             @endif
             <div class="card-body">
-              <h5 class="card-title">Edit Todo</h5>
-              <form class="row g-3" action="/update" method="POST">
+              <h5 class="card-title">Edit Activity Process</h5>
+              <form class="row g-3" action="/updateprocess" method="POST">
                 @csrf
                 <!-- @method('patch') -->
-                <input style="display:none" name="id" value="{{$todo->id}}" />
-                <div class="col-md-12">
+                <input style="display:none" name="id" value="{{$process->id}}" />
+                <div class="col-md-6">
                   <div class="form-floating">
-                    <input type="text" name="title" value="{{ $todo->title }}" class="form-control" id="" placeholder="Activity As Per Action Plan">
+                    <input type="text" name="title" value="{{ $process->process }}" class="form-control" id="" placeholder="Activity As Per Action Plan">
                     <label for="floatingName">Activity</label>
                   </div>
                 </div>
                 <div class="col-6">
                   <div class="form-floating">
-                    <input type="text" class="form-control" name="progress" value="{{ $todo->progress }}" placeholder="Activity Progress" id="floatingTextarea">
+                    <input type="text" class="form-control" name="progress" value="{{ $process->progress }}" placeholder="Activity Progress" id="floatingTextarea">
                     <label for="floatingTextarea">Progress interms of %</label>
-                  </div>
-                </div>
-                <div class="col-md-6">
-                  <label for="inputDate" class="col-sm-2 col-form-label">Deadline</label>
-                  <div class="col-sm-10">
-                    <input type="date" value="{{ $todo->deadline }}" name="deadline" class="form-control">
-                  </div>
-                </div>
-                <div class="col-md-6">
-                  <div class="form-floating">
-                    <input type="text" name="output" value="{{ $todo->output }}" class="form-control" id="floatingZip" placeholder="Zip">
-                    <label for="floatingZip">Output</label>
                   </div>
                 </div>
                 <div class="text-center">
                   <button type="submit" class="btn btn-primary">Edit</button>
                 </div>
               </form><!-- End floating Labels Form -->
-              <a href="{{ asset('/' . $todo->id . '/newtodoprogresses') }}" class="btn btn-primary">Add Processes</a>
+              <a href="{{ asset('/' . $process->id . '/newtodoprogresses') }}" class="btn btn-primary">Add Processes</a>
             </div>
           </div>
   </div>

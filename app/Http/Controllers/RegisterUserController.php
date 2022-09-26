@@ -124,10 +124,10 @@ class RegisterUserController extends Controller
                 $updateuDetails->update(['password' => $updatedPass]);
                 return redirect('/profile')->with('success', "Your Password Updated Successfully!");
             }else{
-                return redirect('/profile')->with('success', "Passwords misatch!");
+                return redirect('/profile')->with('fail', "Passwords misatch!");
             }
         }else{
-            return redirect('/profile')->with('success', "You entered invalid password! $dbpassword and $reqPass");
+            return redirect('/profile')->with('fail', "You entered invalid password! $dbpassword and $reqPass");
         }
     }
 }

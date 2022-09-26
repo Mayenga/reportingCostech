@@ -481,9 +481,31 @@ class TodoController extends Controller
         return redirect('newtodoprogress')->with(['success' => "Activity Process added successfully",'activity' => $request->todoid]);
     }
 
+    public function uploadprocesses(Request $request){
+        $request->validate([
+            'process' => 'required',
+            'todoid' => 'required'
+        ]);
+        $progress = 0;
+        $status = 0;
+        $process = Process::create(['process' => $request->process,'status' => $status,'progress' => $progress,'todo_id' => $request->todoid]);
+        
+        return redirect("/$request->todoid/newtodoprogresses")->with(['success' => "Activity Process added successfully",'activity' => $request->todoid]);
+    }
+
     public function edit($id){
         $todo = Todo::find($id);
         return view('todo.edit')->with(['id' => $id, 'todo' => $todo]);
+    }
+    
+    public function editprocess($id){
+        $process = Process::find($id);
+        return view('todo.editprocess')->with(['id' => $id, 'process' => $process]);
+    }
+
+    public function newtodoprogresses($id){
+        $todo = Todo::find($id);
+        return view('todo.newtodoprogresses')->with(['id' => $id, 'todo' => $todo]);
     }
 
     public function sendDelaymessage(Request $request){
@@ -498,31 +520,95 @@ class TodoController extends Controller
         $request->validate([
             'title' => 'required',
             'progress' => 'required',
-            'process' => 'required',
             'deadline' => 'required',
             'output' => 'required'
         ]);
+        $today = now();
+        if($request->progress > 100){
+            return redirect()->back()->with('error', "Please Enter Correct Progress Value");
+        }
+        if($request->progress == 100){
+            $todo = Todo::find($request->id);
+            $process = DB::select("SELECT * FROM processes WHERE todo_id = $request->id");
+            foreach($process As $process){
+                $processid = $process->id;
+                $process = Process::find($processid);
+                $process->update(['status' => 1, 'progress' => 100]);
+            }
+            $todo->update(['complited' => true, 'completedtime' => now()]);
+        }
+
+        if($request->progress < 0){
+            return redirect()->back()->with('error', "Please Enter Correct Progress Value");
+        }
+        if($request->deadline < $today){
+            return redirect()->back()->with('error', "Please Enter Correct Deadline Dates");
+        }
         $now = now();
         $updateTodo = Todo::find($request->id);
-        $updateTodo->update(['title' => $request->title,'progress' => $request->progress,'process' => $request->process,'deadline' => $request->deadline, 'output' => $request->output, 'completedtime' => $now]);
-        return redirect('/dashboard/todolist')->with('success', "Task Updated successfully!");
+        $updateTodo->update(['title' => $request->title,'progress' => $request->progress,'deadline' => $request->deadline, 'output' => $request->output, 'completedtime' => $now]);
+        return redirect('/dashboard/todolist')->with('success', "Activity Updated Successfully!");
+    }
+
+    public function updateprocess(Request $request){
+        $request->validate([
+            'title' => 'required',
+            'progress' => 'required'
+        ]);
+        $today = now();
+        if($request->progress > 100){
+            return redirect()->back()->with('error', "Please Enter Correct Progress Value");
+        }
+
+        if($request->progress < 0){
+            return redirect()->back()->with('error', "Please Enter Correct Progress Value");
+        }
+
+        if($request->progress == 100){
+            $updateProcess = Process::find($request->id);
+            $updateProcess->update(['status' => true]);    
+        }
+
+        $now = now();
+        $updateProcess = Process::find($request->id);
+        $updateProcess->update(['process' => $request->title,'progress' => $request->progress]);
+        return redirect()->back()->with('success', "Activity Process Updated Successfully!");
     }
 
     public function complited($id){
         $todo = Todo::find($id);
+        $process = DB::select("SELECT * FROM processes WHERE todo_id = $id");
+        foreach($process As $process){
+            $processid = $process->id;
+            $process = Process::find($processid);
+            $process->update(['status' => 1, 'progress' => 100]);
+        }
+        
         if($todo->complited){
             $todo->update(['complited' => false, 'completedtime' => now()]);
             return redirect('/dashboard/todolist')->with('success', "Task marked as Incomplete!");
         }else{
-            $todo->update(['complited' => true, 'completedtime' => now()]);
+            $todo->update(['complited' => true, 'completedtime' => now(), 'progress' => 100]);
             return redirect('/dashboard/todolist')->with('success', "Task marked as Complete!");
         }
+    }
+
+    public function complitedprocess($id){
+        $process = Process::find($id);    
+        $process->update(['status' => true]);
+        return redirect()->back()->with('success', "Activity Process Marked as Complete!");
     }
 
     public function delete($id){
         $todo = Todo::find($id);
         $todo->delete();
-        return redirect('/dashboard/todolist')->with('success', "Task deleted Successfully!");
+        return redirect('/dashboard/todolist')->with('success', "Activity deleted Successfully!");
+    }
+
+    public function deleteprocess($id){
+        $process = Process::find($id);
+        $process->delete();
+        return redirect()->back()->with('success', "Activity Process deleted Successfully!");
     }
 
     public function getUsersTasktodirector($id){

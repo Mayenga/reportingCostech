@@ -47,12 +47,17 @@ require __DIR__.'/auth.php';
 
 // routes for todo
 Route::get('/{id}/edit', 'App\Http\Controllers\TodoController@edit')->name('edit');
+Route::get('/{id}/editprocess', 'App\Http\Controllers\TodoController@editprocess')->name('editprocess');
 Route::post('/sendDelaymessage', 'App\Http\Controllers\TodoController@sendDelaymessage')->name('sendDelaymessage');
 Route::post('/update', 'App\Http\Controllers\TodoController@update')->name('update');
+Route::post('/updateprocess', 'App\Http\Controllers\TodoController@updateprocess')->name('updateprocess');
 Route::get('/{id}/complited', 'App\Http\Controllers\TodoController@complited')->name('complited');
+Route::get('/{id}/complitedprocess', 'App\Http\Controllers\TodoController@complitedprocess')->name('complitedprocess');
 Route::get('/{id}/delete', 'App\Http\Controllers\TodoController@delete')->name('delete');
+Route::get('/{id}/deleteprocess', 'App\Http\Controllers\TodoController@deleteprocess')->name('/deleteprocess');
 Route::get('/upload', 'App\Http\Controllers\TodoController@upload')->name('upload');
 Route::get('/uploadprocess', 'App\Http\Controllers\TodoController@uploadprocess')->name('/uploadprocess');
+Route::get('/uploadprocesses', 'App\Http\Controllers\TodoController@uploadprocesses')->name('/uploadprocesses');
 Route::get('/todolistThisWeek', 'App\Http\Controllers\TodoController@getTodosWeek')->name('todolistThisWeek');
 Route::get('/todolistall', 'App\Http\Controllers\TodoController@getTodosAll')->name('todolistall');
 Route::get('/{id}/guttdir', 'App\Http\Controllers\TodoController@getUsersTasktodirector')->name('getUsersTasktodirector');
@@ -61,6 +66,7 @@ Route::get('/{id}/guttdg2', 'App\Http\Controllers\TodoController@getUsersTasktod
 Route::get('/newtodoprogress', function () {
     return view('todo.newtodoprogress');
 });
+Route::get('/{id}/newtodoprogresses', 'App\Http\Controllers\TodoController@newtodoprogresses')->name('newtodoprogresses');
 
 // all users except admin
 Route::get('/dashboard/newtodo', 'App\Http\Controllers\TodoController@create')->name('dashboard.newtodo');
