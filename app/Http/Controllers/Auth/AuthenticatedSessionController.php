@@ -7,6 +7,7 @@ use App\Http\Requests\Auth\LoginRequest;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Redirect;
 
 class AuthenticatedSessionController extends Controller
 {
@@ -28,6 +29,13 @@ class AuthenticatedSessionController extends Controller
      */
     public function store(LoginRequest $request)
     {
+        try {
+            \DB::connection()->getPDO();
+            echo \DB::connection()->getDatabaseName();
+            } catch (\Exception $e) {
+            return Redirect::to('/')->with(['dbMessage' => 'Your message']);
+        }
+
         $request->authenticate();
 
         $request->session()->regenerate();

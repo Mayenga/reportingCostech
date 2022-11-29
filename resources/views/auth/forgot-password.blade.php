@@ -6,7 +6,8 @@
             </a> -->
             <a href="/" class="logo d-flex align-items-center w-auto">
                 <img src="assets/img/logo.png" alt="">
-                <span class="d-none d-lg-block">Reporting MS</span>
+                <span class="d-none d-lg-block" style="margin-right:5px;">COSTECH REPORTING MANAGEMENT SYSTEM</span>
+                <img src="assets/img/logo.png" alt="">
             </a>
         </x-slot>
 

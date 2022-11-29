@@ -24,15 +24,17 @@
               <?php 
                 $role = '';
                 $id = Auth::user()->id;
-                $dpts = DB::select("SELECT roles.name AS rolee FROM role_user,roles,users WHERE users.id = role_user.user_id AND role_user.role_id = roles.id AND users.id = $id");
+                $dpts = DB::select("SELECT roles.name AS rolee,departments.name AS dpt_name FROM role_user,roles,users,departments WHERE users.dpt_id = departments.id AND users.id = role_user.user_id AND role_user.role_id = roles.id AND users.id = $id");
 
                 foreach($dpts as $dpt){
                     if($dpt->rolee == 'dg'){
                         $role = 'Director General';
                     }elseif($dpt->rolee == 'director'){
                         $dpt->rolee == 'Director';
+                        $dpt_name = $dpt->dpt_name;
                     }elseif($dpt->rolee == 'user'){
                         $dpt->rolee == 'User';
+                        $dpt_name = $dpt->dpt_name;
                     }
                     echo "<h3>$role</h3>";
                 }
@@ -114,7 +116,21 @@
                     <div class="col-lg-3 col-md-4 label">Email</div>
                     <div class="col-lg-9 col-md-8">{{Auth::user()->email}}</div>
                   </div>
- 
+
+                  @if (Auth::user()->hasRole('director'))
+                  <div class="row">
+                    <div class="col-lg-3 col-md-4 label">Department</div>
+                    <div class="col-lg-9 col-md-8">{{$dpt_name}}</div>
+                  </div>
+                  @endif
+
+                  @if (Auth::user()->hasRole('user'))
+                  <div class="row">
+                    <div class="col-lg-3 col-md-4 label">Department</div>
+                    <div class="col-lg-9 col-md-8">{{$dpt_name}}</div>
+                  </div>
+                  @endif
+
                 </div>
 
                 <div class="tab-pane fade profile-edit pt-3" id="profile-edit">

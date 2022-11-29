@@ -46,8 +46,21 @@
                 </div>
                 <div class="col-6">
                   <div class="form-floating">
-                    <input type="text" class="form-control" name="progress" value="{{ $todo->progress }}" placeholder="Activity Progress" id="floatingTextarea">
-                    <label for="floatingTextarea">Progress interms of %</label>
+                  <select name="progress" class="block mt-1 w-full border-grey-300 focus:border-indigo-300 focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm">
+                        <option value="0"></option>
+                        <option value="10">10%</option>
+                        <option value="20">20%</option>
+                        <option value="30">30%</option>
+                        <option value="40">40%</option>
+                        <option value="50">50%</option>
+                        <option value="60">60%</option>
+                        <option value="70">70%</option>
+                        <option value="80">80%</option>
+                        <option value="90">90%</option>
+                        <option value="100">100%</option>
+                    </select>
+                    
+                    <label for="floatingTextarea">Progress Interms of %. Currently {{ $todo->progress }}%</label>
                   </div>
                 </div>
                 <div class="col-md-6">

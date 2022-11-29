@@ -7,14 +7,16 @@
         <section class="section register min-vh-100 d-flex flex-column align-items-center justify-content-center py-4">
           <div class="container">
             <div class="row justify-content-center">
+              <div class="col-lg-8 col-md-6 d-flex justify-content-center py-4">
+                <a href="/" class="logo d-flex align-items-center w-auto">
+                  <img src="assets/img/logo.png" alt="">
+                  <span class="d-none d-lg-block" style="margin-right:5px;">COSTECH REPORTING MANAGEMENT SYSTEM</span>
+                  <img src="assets/img/costech.png" alt="">
+                </a>
+              </div><!-- End Logo -->
+            </div>
+            <div class="row justify-content-center">
               <div class="col-lg-4 col-md-6 d-flex flex-column align-items-center justify-content-center">
-
-                <div class="d-flex justify-content-center py-4">
-                  <a href="/" class="logo d-flex align-items-center w-auto">
-                    <img src="assets/img/logo.png" alt="">
-                    <span class="d-none d-lg-block">Reporting MS</span>
-                  </a>
-                </div><!-- End Logo -->
 
                 <div class="card mb-3">
 
@@ -30,6 +32,13 @@
 
                     <!-- Validation Errors -->
                     <x-auth-validation-errors class="mb-4" :errors="$errors" />
+                    
+                    @if(Session::has('dbMessage'))
+                    <div class="alert alert-danger">
+                      <strong>Whoops!</strong> There were some problems accessing Database. Kindly try again<br><br>
+                      {{ Session::get('error') }}
+                    </div>
+                    @endif
 
                     <form method="POST" action="{{ route('login') }}" class="row g-3 needs-validation" novalidate>
                       @csrf
